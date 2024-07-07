@@ -2,34 +2,30 @@ version: '3.8'
 
 services:
   backend:
-    image: python:3.12.3
-    container_name: backend
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: backend
     volumes:
       - ./backend:/app
     env_file:
       - ./.env
-    environment:
-      - PATH=${POETRY_HOME}/bin:$PATH
-    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port ${BACKEND_PORT} --reload
     depends_on:
       - db
+    ports:
+      - "8000:8000"
 
   frontend:
-    image: node:20.13.1
-    container_name: frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    container_name: frontend
     volumes:
       - ./frontend:/app
     env_file:
       - ./.env
-    command: npm start
     ports:
-      - "${FRONTEND_PORT}:3000"
+      - "5173:5173"
     depends_on:
       - backend
 
@@ -43,7 +39,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "${POSTGRES_PORT}:5432"
+      - "5432:5432"
 
 volumes:
   postgres_data:
