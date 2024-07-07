@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    image: python:3.12.3
+    container_name: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    depends_on:
+      - db
+
+  frontend:
+    image: node:20.13.1
+    container_name: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend:/app
+    env_file:
+      - ./frontend/.env
+    command: npm start
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: changethis123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
