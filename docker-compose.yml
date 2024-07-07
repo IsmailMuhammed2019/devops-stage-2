@@ -10,8 +10,8 @@ services:
     volumes:
       - ./backend:/app
     env_file:
-      - ./backend/.env
-    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      - ./.env
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --port ${BACKEND_PORT} --reload
     depends_on:
       - db
 
@@ -24,10 +24,10 @@ services:
     volumes:
       - ./frontend:/app
     env_file:
-      - ./frontend/.env
+      - ./.env
     command: npm start
     ports:
-      - "3000:3000"
+      - "${FRONTEND_PORT}:3000"
     depends_on:
       - backend
 
@@ -35,13 +35,13 @@ services:
     image: postgres:latest
     container_name: postgres
     environment:
-      POSTGRES_DB: app
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: changethis123
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT}:5432"
 
 volumes:
   postgres_data:
