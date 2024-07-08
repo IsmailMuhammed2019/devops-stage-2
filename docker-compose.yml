@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 version: '3'
 services:
   frontend:
@@ -6,25 +5,25 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://backend:8000
+      - VITE_API_URL=${VITE_API_URL}
   backend:
     build: ./backend
     ports:
       - "8000:8000"
     environment:
-      - DOMAIN=localhost
-      - ENVIRONMENT=local
-      - POSTGRES_SERVER=db
-      - POSTGRES_PORT=5432
-      - POSTGRES_DB=app
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=changethis123
+      - DOMAIN=${DOMAIN}
+      - ENVIRONMENT=${ENVIRONMENT}
+      - POSTGRES_SERVER=${POSTGRES_SERVER}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   db:
     image: postgres
     environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=app
-      - POSTGRES_PASSWORD=changethis123
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   nginx:
     image: nginx:latest
     ports:
@@ -34,6 +33,3 @@ services:
     depends_on:
       - frontend
       - backend
-=======
-
->>>>>>> refs/remotes/origin/main
