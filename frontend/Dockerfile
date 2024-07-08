@@ -1,14 +1,13 @@
-# frontend/Dockerfile
-
-FROM node:20.13.1
-
+# Stage 1: Build the React app
+FROM node:20 AS build
 WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
+COPY package.json yarn.lock ./
+RUN yarn install
 COPY . .
+RUN yarn build
 
-EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
+# Stage 2: Serve the React app
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

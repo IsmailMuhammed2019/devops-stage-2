@@ -1,0 +1,31 @@
+http:
+  routers:
+    frontend:
+      rule: "Host(`${DOMAIN}`) && PathPrefix(`/`)"
+      service: frontend
+      entryPoints:
+        - web
+    backend:
+      rule: "Host(`${DOMAIN}`) && PathPrefix(`/api`)"
+      service: backend
+      entryPoints:
+        - web
+    docs:
+      rule: "Host(`${DOMAIN}`) && PathPrefix(`/docs`)"
+      service: backend
+      entryPoints:
+        - web
+    redoc:
+      rule: "Host(`${DOMAIN}`) && PathPrefix(`/redoc`)"
+      service: backend
+      entryPoints:
+        - web
+  services:
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:3000"
+    backend:
+      loadBalancer:
+        servers:
+          - url: "http://backend:8000"
