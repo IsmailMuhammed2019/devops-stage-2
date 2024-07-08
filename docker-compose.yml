@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 version: '3'
 services:
   frontend:
@@ -33,3 +34,6 @@ services:
     depends_on:
       - frontend
       - backend
+=======
+
+>>>>>>> refs/remotes/origin/main
